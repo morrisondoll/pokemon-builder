@@ -1,0 +1,120 @@
+///Archivo SASS que construye las tablas
+///@author: Israel Trejo
+
+///Mixins used by bitTables
+///Mixin to create a color table
+=createColorTable($nameTable, $nameColor, $color)
+  tr.#{$nameColor},
+  td.#{$nameColor},
+  thead.#{$nameColor},
+  tbody.#{$nameColor},
+  .#{$nameTable}.#{$nameColor}
+    color: map-get($color, 'primary-color-title')
+    background-color: map-get($color, 'primary-color')
+    transition: all .25s
+
+  .#{$nameTable}.#{$nameColor}
+    &.header
+      & thead
+        color: map-get($color, 'primary-color-title')
+        background-color: map-get($color, 'primary-color')
+
+      & tbody
+        color: map-get($color, 'primary-color-text')
+        background-color: #FFFFFF
+
+      & tr
+        border-bottom: 1px map-get($color, 'divider-color') solid
+
+      &.hover tbody tr:hover
+        background-color: map-get($color, 'primary-color')
+        color: map-get($color, 'primary-color-title')
+        transition: all .25s
+
+      &.bordered td,
+      &.bordered th,
+        border: 1px map-get($color, 'divider-color') solid
+
+      &.striped tbody tr:nth-child(2n+1)
+        background-color: map-get($color, 'primary-color')
+        color: map-get($color, 'primary-color-title')
+
+      &.hover.striped tbody tr:nth-child(2n+1):hover
+        background-color: map-get($color, 'primary-color-dark')
+        color: map-get($color, 'primary-color-title')
+
+    &.borderless tr
+      border: 0px
+
+    & tr
+      border-bottom: 1px map-get($color, 'primary-color-light') solid
+
+    &.hover tbody tr:hover
+      background-color: map-get($color, 'primary-color-dark')
+      transition: all .25s
+
+    &.bordered td,
+    &.bordered th,
+      border: 1px map-get($color, 'primary-color-light') solid
+
+    &.striped tbody tr:nth-child(2n+1)
+      background-color: map-get($color, 'primary-color-dark')
+
+    &.hover.striped tbody tr:nth-child(2n+1):hover
+      background-color: map-get($color, 'accent-color')
+
+/// Mixin to create the base style of a table.
+=createBaseTable($nameTable, $default)
+  .#{$nameTable}
+    width: 100%
+    border-collapse: collapse
+    transition: all .25s
+
+    & td,
+    & th
+      padding: .5em 1em
+
+      & input
+        border: none
+
+        &:focus
+          border: none
+          box-shadow: none
+
+    & tr
+      width: auto
+      border-bottom: 1px map-get($default, 'divider-color') solid
+
+    &.borderless tr
+      border: 0px
+
+    &.hover tbody tr:hover
+      background-color: map-get($default, 'divider-color')
+      transition: all .25s
+
+    &.bordered td,
+    &.bordered th,
+      border: 1px map-get($default, 'divider-color') solid
+
+    &.striped tbody tr:nth-child(2n+1)
+      background-color: map-get($default, 'divider-color')
+
+    &.hover.striped tbody tr:nth-child(2n+1):hover
+      background-color: map-get($default, 'accent-color')
+
+    &.header thead
+      background-color: map-get($default, 'divider-color')
+
+///Mixin to create all the sizes of the tables.
+=createSizesTable($nameTable, $sizes)
+  $keysTam: map-keys($sizes)
+  @each $tam in $keysTam
+    .#{$nameTable}.#{$tam} td,
+    .#{$nameTable}.#{$tam} th
+      padding: .5em*(map-get($sizes, $tam)) 1em*(map-get($sizes, $tam))
+
+///Mixin to create all the colors of the tables.
+=createColorsTable($nameTable, $colors)
+  $keysColors: map-keys($colors)
+  @each $color in $keysColors
+    +createColorTable($nameTable, $color, map-get($colors, $color))

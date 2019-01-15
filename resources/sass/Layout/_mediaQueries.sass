@@ -1,0 +1,31 @@
+///Archivo SASS que crea todos los elementos de MediaQueries
+///@author: Israel Trejo
+
+///Mixin usados
+=hideFrom($nameClass, $breakpoints)
+  $keysBp: map-keys($breakpoints)
+  @each $bp in $keysBp
+    @media only screen and (min-width: map-get($breakpoints, $bp))
+      .#{$nameClass}-#{$bp}
+        display: none
+
+=hideTo($nameClass, $breakpoints)
+  $keysBp: map-keys($breakpoints)
+  @each $bp in $keysBp
+    @media only screen and (max-width: map-get($breakpoints, $bp))
+      .#{$nameClass}-#{$bp}
+        display: none
+
+=showFrom($nameClass, $breakpoints, $display: block)
+  $keysBp: map-keys($breakpoints)
+  @each $bp in $keysBp
+    @media only screen and (min-width: map-get($breakpoints, $bp))
+      .#{$nameClass}-#{$bp}
+        display: $display
+
+=showTo($nameClass, $breakpoints, $display: block)
+  $keysBp: map-keys($breakpoints)
+  @each $bp in $keysBp
+    @media only screen and (max-width: map-get($breakpoints, $bp))
+      .#{$nameClass}-#{$bp}
+        display: $display

@@ -1,0 +1,153 @@
+///Archivo SASS que crear los estilos de los navs
+///@author: Israel Trejo
+///@group: BitByDev
+
+///Mixins usados en los navs
+=createColorNav($nameNav, $nameColor, $color)
+  .#{$nameNav}-#{$nameColor}
+    background-color: map-get($color, 'primary-color')
+
+    & .item,
+    & .link
+      color: map-get($color, 'primary-color-light')
+
+    & .link:hover,
+    & .item:hover
+      color: map-get($color, 'accent-color')
+
+    & .active,
+    & .link.active,
+    & .item.active
+      color: map-get($color, 'primary-color-title')
+
+=createNavPills($nameNav, $nameColor, $color)
+  .#{$nameNav}.pills.#{$nameColor} .active,
+  .#{$nameNav}.pills.#{$nameColor} .link.active,
+  .#{$nameNav}.pills.#{$nameColor} .item.active
+    background-color: map-get($color, 'primary-color')
+    color: map-get($color, 'primary-color-title')
+
+    &:hover
+      color: map-get($color, 'primary-color-light')
+
+  .#{$nameNav}.pills.#{$nameColor} .link,
+  .#{$nameNav}.pills.#{$nameColor} .item
+    color: map-get($color, 'primary-color')
+    border: 1px transparent solid
+
+    &:hover
+      color: map-get($color, 'accent-color')
+      border: 1px map-get($color, 'accent-color') solid
+
+=createNavTabs($nameNav, $nameColor, $color)
+  .#{$nameNav}.tabs.#{$nameColor}
+    & .link,
+    & .item
+      color: map-get($color, 'primary-color')
+      border-top-left-radius: 5px
+      border-top-right-radius: 5px
+      border-bottom: 1px map-get($color, 'primary-color') solid
+      border-top: 1px solid transparent
+      border-left: 1px solid transparent
+      border-right: 1px solid transparent
+
+      &:hover
+        color: map-get($color, 'accent-color')
+        border-top: 1px map-get($color, 'accent-color') solid
+        border-right: 1px map-get($color, 'accent-color') solid
+        border-left: 1px map-get($color, 'accent-color') solid
+
+    & .active,
+    & .link.active,
+    & .item.active
+      color: map-get($color, 'primary-color-dark')
+      border-bottom: 0px
+      border-top: 1px map-get($color, 'primary-color-dark') solid
+      border-right: 1px map-get($color, 'primary-color-dark') solid
+      border-left: 1px map-get($color, 'primary-color-dark') solid
+
+    &.outside .active,
+    &.outside .link.active,
+    &.outside .item.active
+      background-color: map-get($color, 'primary-color')
+      color: map-get($color, 'primary-color-title')
+      border-bottom: 0px
+      border-top: 1px map-get($color, 'primary-color') solid
+      border-right: 1px map-get($color, 'primary-color') solid
+      border-left: 1px map-get($color, 'primary-color') solid
+
+=createAllColorNav($nameNav, $nameColor, $color)
+  +createColorNav($nameNav, $nameColor, $color)
+  +createNavPills($nameNav, $nameColor, $color)
+  +createNavTabs($nameNav, $nameColor, $color)
+
+=createBaseNav($nameNav, $default)
+  .#{$nameNav}
+    display: inline-flex
+    flex-wrap: wrap
+    padding: 0px
+    margin: 0px
+    border: 0px
+    width: auto
+
+    & .item,
+    & .link
+      color: map-get($default, 'primary-color')
+      padding: .5em 1em
+      display: block
+      transition: .2s all
+
+      &:hover
+        color: map-get($default, 'accent-color')
+        cursor: pointer
+
+    &.fill .link,
+    &.fill .item
+      text-align: center
+      flex: 1 1 auto
+
+    &.fill
+      width: 100%
+
+    &.pills
+      & .active,
+      & .link.active
+        background-color: map-get($default, 'accent-color')
+        color: white
+
+    &.pills .item,
+    &.pills .link
+      border-radius: 5px
+      border: 1px transparent solid
+
+      &:hover
+        border-color: map-get($default, 'accent-color')
+
+    $border-color: map-get($default, 'divider-color')
+
+    &.tabs
+      & .link,
+      & .item
+        border-top-left-radius: 5px
+        border-top-right-radius: 5px
+        border-bottom: 1px $border-color solid
+        border-top: 1px solid transparent
+        border-left: 1px solid transparent
+        border-right: 1px solid transparent
+
+        &:hover
+          border-top: 1px $border-color solid
+          border-right: 1px $border-color solid
+          border-left: 1px $border-color solid
+
+        &.active
+          color: $border-color
+          border-bottom: 0px
+          border-top: 1px $border-color solid
+          border-right: 1px $border-color solid
+          border-left: 1px $border-color solid
+
+=createColorsNav($nameNav, $colors)
+  $keysColors: map-keys($colors)
+  @each $color in $keysColors
+    +createAllColorNav($nameNav, $color, map-get($colors, $color))
