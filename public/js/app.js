@@ -1,3 +1,25 @@
+//Animaciones de componentes
+var btn_menu = document.getElementsByClassName('btn-menu');
+var menu = document.getElementById('principal-menu');
+
+document.onreadystatechange = () => {
+    if (document.readyState === 'complete') {
+        for (let x = 0; x < btn_menu.length; x++) {
+            btn_menu[x].addEventListener('click', () => {
+                if (parseInt(menu.style.marginLeft) < 0) {
+                    menu.style.marginLeft = "0%";
+                } else {
+                    menu.style.marginLeft = "-30%";
+                }
+            }, false);
+        }
+
+        document.addEventListener("scroll", () => {
+            menu.style.top = scrollY + "px";
+        }, false);
+    }
+}
+
 //Obtener Todos los Registros
 const getAll = (list) => new Promise((resolve, reject) => {
     const api = `https://pokeapi.co/api/v2/${list}/`;
@@ -48,14 +70,11 @@ const loadElement = (element, data) => {
 
     for (let x = 0; x < data.length; x++) {
         var dato = data[x];
+
+        template += `<th class="menu-sprite art ${element[dato]}">{{ ` + dato + ` }}</th>`
+
         if (typeof element[dato] === "string") {
             element[dato] = element[dato].charAt(0).toUpperCase() + element[dato].slice(1);
-        }
-
-        if (dato.includes("sprites")) {
-            template += `<th><img src="{{ ` + dato + ` }}"></th>`
-        } else {
-            template += `<th>{{ ` + dato + ` }}</th>`
         }
     }
 
@@ -74,14 +93,22 @@ var requests = document.querySelectorAll("*[data-request]");
 for (let x = 0; x < requests.length; x++) {
     let e = requests[x];
     e.addEventListener("click", () => {
+        menu.style.marginLeft = "-30%";
         let request = e.dataset.request;
+        let title = e.dataset.title;
         getAll(request).then(
             elements => {
-                var titulos = getTitles(request);
+                var titulos = {
+                    'titulo-principal': title,
+                    'titulos': {
+                        'nombre': 'Pokémon',
+                        'nombre': 'Nombre'
+                    }
+                };
 
                 var template = `
-                    <h2 class="text-center" style="padding: 1em">{{ titulo-principal }}</h2>
-                    <table class="table header red">
+                    <h2 class="text-center">{{ titulo-principal }}</h2>
+                    <table class="table">
                         <thead>
                             <tr>
                                 {{ #titulos }}
@@ -97,17 +124,17 @@ for (let x = 0; x < requests.length; x++) {
                 var html = Mustache.render(template, titulos);
                 var doc = document.getElementById("principal");
                 doc.innerHTML = html;
-                for (let x = 0; x < 50; x++) {
+                for (let x = 0; x < elements.count; x++) {
                     element = elements.results[x];
-                    console.log(element);
-                    getOne(request, element.name).then(
-                        element => {
-                            loadRow(request, element);
-                        },
-                        error => console.error(
-                            new Error('Hubo un error ' + error)
-                        )
-                    );
+                    // getOne(request, element.name).then(
+                    //     element => {
+                    //         loadRow(request, element);
+                    //     },
+                    //     error => console.error(
+                    //         new Error('Hubo un error ' + error)
+                    //     )
+                    // );
+                    loadRow(element);
                 };
             },
             error => console.error(
@@ -117,104 +144,8 @@ for (let x = 0; x < requests.length; x++) {
     }, false);
 }
 
-
-//Obtener titulos en base al request
-const getTitles = request => {
-    var titulos;
-    switch (request) {
-        case "type":
-            titulos = {
-                "titulos": [
-                    { "nombre": "Nombre del tipo" }
-                ],
-                "titulo-principal": "Tipos Disponibles de Pokémon"
-            }
-            break;
-
-        case "pokemon-color":
-            titulos = {
-                "titulos": [
-                    { "nombre": "Nombre del color" }
-                ],
-                "titulo-principal": "Colores Disponibles de Pokémon"
-            }
-            break;
-
-        case "stat":
-            titulos = {
-                "titulos": [
-                    { "nombre": "Nombre de la estadística" }
-                ],
-                "titulo-principal": "Estadísticas Disponibles de Pokémon"
-            }
-            break;
-
-        case "move-damage-class":
-            titulos = {
-                "titulos": [
-                    { "nombre": "Nombre de la categoría" }
-                ],
-                "titulo-principal": "Categorías de movimientos"
-            }
-
-        case "pokemon":
-            titulos = {
-                "titulos": [
-                    { "nombre": "Nombre de la categoría" }
-                ],
-                "titulo-principal": "Categorías de movimientos"
-            }
-            break;
-    }
-
-    return titulos;
-}
-
 //Crear rows en base al request
-const loadRow = (request, element) => {
-    var data;
-    switch (request) {
-        case "type":
-            data = [
-                "name"
-            ]
-            break;
-
-        case "pokemon-color":
-            data = [
-                "name"
-            ]
-            break;
-
-        case "stat":
-            data = [
-                "name"
-            ]
-            break;
-
-        case "move-damage-class":
-            data = [
-                "name"
-            ]
-            break;
-
-        case "pokemon":
-            data = [
-                "name",
-                "id",
-                "weight",
-                "sprites.front_default",
-                "sprites.front_default",
-                "stats.0.base_stat",
-                "stats.1.base_stat",
-                "stats.2.base_stat",
-                "stats.3.base_stat",
-                "stats.4.base_stat",
-                "stats.5.base_stat",
-                "height",
-                "base_experience"
-            ]
-            break;
-    }
+const loadRow = (element) => {
+    var data = ['name'];
     loadElement(element, data);
 }

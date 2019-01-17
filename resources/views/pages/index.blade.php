@@ -7,11 +7,19 @@
 @endsection
 
 @section('content')
-    @include('components.header.index')
+    <div class="grid-container">
+        @include('components.header.index')
 
-    <section id="principal" class="container">
+        <div class="content">
+            <div id="principal">
+                <h1>Hola! Bienvenido a Pokemon Builder</h1>
+            </div>
+        </div>
 
-    </section>
+        @include('components.footer.index')
+
+        @include('components.menu.index')
+    </div>
 @endsection
 
 @section('javascript')

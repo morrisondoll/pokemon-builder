@@ -17,9 +17,9 @@
 
         @show
     </div>
-    
+
     @section('javascript')
-        
+
     @show
 </body>
 </html>

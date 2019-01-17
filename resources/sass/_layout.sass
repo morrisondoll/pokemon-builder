@@ -1,0 +1,67 @@
+.full-container,
+.container
+    width: 100%
+
+.container
+    max-width: 1200px
+
+.content
+    grid-area: content
+
+.header,
+.content,
+.footer
+    padding: 0.5em 1em
+
+.header
+    grid-area: header
+    background-color: $primary-first-color
+    display: flex
+    justify-content: space-between
+    align-items: center
+    position: sticky
+    top: 0
+    z-index: 1
+
+.footer
+    grid-area: footer
+    background-color: $secondary-first-color
+    color: $primary-text-color
+    text-align: center
+    padding: 2em 0em
+
+.side-menu
+    width: 25vw
+    height: 100vh
+    display: flex
+    flex-direction: column
+    background-color: $secondary-first-color
+    color: $primary-text-color
+    align-items: stretch
+    border: 1px $secondary-second-color
+    position: absolute
+    top: 0
+    left: 0
+    box-shadow: 5px 0px 5px rgba(0, 0, 0, .5)
+    margin-left: -30%
+    transition: .5s ease-out margin-left
+    z-index: 2
+
+    & li,
+    & h3
+        padding: .7em
+
+    & li
+        border-top: 1px $primary-text-color solid
+
+        &:hover
+            cursor: pointer
+            background-color: $secondary-second-color
+
+.title-menu
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+.grid-container
+    grid-template-areas: 'header' 'content' 'footer'
